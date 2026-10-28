@@ -1,0 +1,7 @@
+{
+  "temperature": 10.0,
+  "uncalibrated_ece": 0.8325,
+  "calibrated_ece": 0.1851,
+  "ece_reduction_pct": 77.77,
+  "val_samples": 120
+}

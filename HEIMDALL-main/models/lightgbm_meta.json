@@ -1,0 +1,57 @@
+{
+  "model_type": "LightGBMClassifier",
+  "val_accuracy": 1.0,
+  "val_macro_f1": 1.0,
+  "train_samples": 960,
+  "val_samples": 120,
+  "classes": [
+    "normal",
+    "cpu_stress",
+    "memory_pressure",
+    "disk_pressure",
+    "network_flood",
+    "system_anomaly"
+  ],
+  "top_features": [
+    {
+      "feature": "delta_mem_used_pct",
+      "importance": 1443
+    },
+    {
+      "feature": "load_avg_15",
+      "importance": 1228
+    },
+    {
+      "feature": "swap_used_pct",
+      "importance": 549
+    },
+    {
+      "feature": "cpu_percent_mean",
+      "importance": 461
+    },
+    {
+      "feature": "cpu_percent_max",
+      "importance": 420
+    },
+    {
+      "feature": "disk_write_mbps",
+      "importance": 395
+    },
+    {
+      "feature": "num_processes",
+      "importance": 362
+    },
+    {
+      "feature": "disk_write_iops",
+      "importance": 332
+    },
+    {
+      "feature": "cpu_freq_mhz",
+      "importance": 288
+    },
+    {
+      "feature": "net_bytes_sent_mbps",
+      "importance": 277
+    }
+  ]
+}

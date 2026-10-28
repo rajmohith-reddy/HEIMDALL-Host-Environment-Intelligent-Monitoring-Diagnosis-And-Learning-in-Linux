@@ -1,0 +1,9 @@
+{
+  "model_type": "IsolationForest",
+  "n_estimators": 150,
+  "p50_val_score": 0.4412981987055638,
+  "p995_threshold": 0.4713362798133427,
+  "threshold": 0.4713362798133427,
+  "train_samples": 960,
+  "val_samples": 120
+}

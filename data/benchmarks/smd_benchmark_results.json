@@ -1,0 +1,10 @@
+{
+  "dataset": "Server Machine Dataset (SMD machine-1-1, 38 metrics)",
+  "n_train": 1200,
+  "n_test": 1000,
+  "n_features": 38,
+  "roc_auc": 1.0,
+  "f1": 0.9623,
+  "precision": 0.9274,
+  "recall": 1.0
+}

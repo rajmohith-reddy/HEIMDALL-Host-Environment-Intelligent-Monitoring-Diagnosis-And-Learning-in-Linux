@@ -1,0 +1,214 @@
+{
+  "timestamp": "2026-10-12T12:00:55+00:00",
+  "label": "memory_pressure",
+  "cpu": {
+    "cpu_percent_per_core": [
+      14.3,
+      8.7,
+      10.0,
+      11.1,
+      17.8,
+      20.0,
+      16.3,
+      42.2,
+      26.7,
+      23.3,
+      18.2,
+      18.2
+    ],
+    "cpu_percent_mean": 19.4,
+    "cpu_percent_max": 37.68,
+    "cpu_percent_std": 11.77,
+    "cpu_freq_mhz": 3084.4,
+    "load_avg_1": 5.73,
+    "load_avg_5": 4.91,
+    "load_avg_15": 3.63,
+    "cpu_ctx_switches_per_sec": 45931.8,
+    "cpu_interrupts_per_sec": 12458.5,
+    "num_logical_cpus": 12
+  },
+  "memory": {
+    "mem_total_mb": 15629.8,
+    "mem_used_mb": 15031.8,
+    "mem_available_mb": 598.0,
+    "mem_used_pct": 96.17,
+    "mem_cached_mb": 2660.9,
+    "swap_total_mb": 7740.0,
+    "swap_used_mb": 0.0,
+    "swap_used_pct": 89.24,
+    "swap_in_per_sec": 592.35,
+    "swap_out_per_sec": 955.52,
+    "page_faults_per_sec": 0.0
+  },
+  "disk": {
+    "disk_read_mbps": 1.083,
+    "disk_write_mbps": 1.804,
+    "disk_read_iops": 28.4,
+    "disk_write_iops": 40.9,
+    "disk_read_ms": 0.0,
+    "disk_write_ms": 20.45,
+    "disk_used_pct": 60.1,
+    "disk_free_gb": 51.17,
+    "disk_used_gb": 76.66,
+    "mountpoints": [
+      {
+        "mountpoint": "/",
+        "used_pct": 60.0,
+        "free_gb": 51.17
+      },
+      {
+        "mountpoint": "/snap/bare/5",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/gnome-46-2404/153",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/snapd/27738",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/gnome-46-2404/164",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/snapd/28254",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/core24/1643",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/mesa-2404/1839",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/mesa-2404/1165",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/spotify/99",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/gtk-common-themes/1535",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/core24/2124",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/snap/spotify/97",
+        "used_pct": 100.0,
+        "free_gb": 0.0
+      },
+      {
+        "mountpoint": "/boot/efi",
+        "used_pct": 0.0,
+        "free_gb": 0.95
+      }
+    ]
+  },
+  "network": {
+    "net_bytes_sent_mbps": 2.169,
+    "net_bytes_recv_mbps": 2.4569,
+    "net_packets_sent_per_sec": 1750.4,
+    "net_packets_recv_per_sec": 2206.2,
+    "net_errin_per_sec": 0.0,
+    "net_errout_per_sec": 0.0,
+    "net_dropin_per_sec": 0.0,
+    "net_dropout_per_sec": 0.0,
+    "tcp_connections": 47,
+    "udp_connections": 10
+  },
+  "process": {
+    "num_processes": 334,
+    "num_threads": 993,
+    "num_zombies": 1,
+    "open_files": 11341,
+    "top_cpu_procs": [
+      {
+        "pid": 4320,
+        "name": "antigravity",
+        "cpu_pct": 67.7,
+        "mem_pct": 2.642
+      },
+      {
+        "pid": 3523,
+        "name": "antigravity",
+        "cpu_pct": 49.6,
+        "mem_pct": 1.057
+      },
+      {
+        "pid": 47786,
+        "name": "brave",
+        "cpu_pct": 47.4,
+        "mem_pct": 1.147
+      },
+      {
+        "pid": 2437,
+        "name": "picom",
+        "cpu_pct": 18.1,
+        "mem_pct": 0.513
+      },
+      {
+        "pid": 1316,
+        "name": "Xorg",
+        "cpu_pct": 13.5,
+        "mem_pct": 0.816
+      }
+    ],
+    "top_mem_procs": [
+      {
+        "pid": 4320,
+        "name": "antigravity",
+        "cpu_pct": 67.7,
+        "mem_pct": 2.642
+      },
+      {
+        "pid": 55307,
+        "name": "python",
+        "cpu_pct": 9.0,
+        "mem_pct": 2.232
+      },
+      {
+        "pid": 3695,
+        "name": "language_server",
+        "cpu_pct": 0.0,
+        "mem_pct": 2.087
+      },
+      {
+        "pid": 47720,
+        "name": "brave",
+        "cpu_pct": 0.0,
+        "mem_pct": 2.009
+      },
+      {
+        "pid": 3465,
+        "name": "antigravity",
+        "cpu_pct": 0.0,
+        "mem_pct": 1.688
+      }
+    ]
+  },
+  "system": {
+    "uptime_seconds": 2043.5,
+    "logged_in_users": 1,
+    "failed_services": 3,
+    "auth_failures_60s": 0
+  }
+}

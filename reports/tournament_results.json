@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-10-15 00:03:14",
+  "unsupervised_tournament": [
+    {
+      "model": "Isolation Forest (Ensemble Trees)",
+      "roc_auc": 0.9644999999999999,
+      "f1_score": 0.0,
+      "recall": 0.0,
+      "fpr_normal": 0.0,
+      "latency_us": 70.72866666627912
+    },
+    {
+      "model": "Denoising Autoencoder (PyTorch NN)",
+      "roc_auc": 0.569,
+      "f1_score": 0.3333333333333333,
+      "recall": 0.2,
+      "fpr_normal": 0.0,
+      "latency_us": 476.22226666893164
+    },
+    {
+      "model": "Robust MAD Baseline (Non-Parametric)",
+      "roc_auc": 0.8,
+      "f1_score": 0.0,
+      "recall": 0.0,
+      "fpr_normal": 0.0,
+      "latency_us": 77.36614999960996
+    }
+  ],
+  "supervised_tournament": [
+    {
+      "model": "LightGBM (Gradient Boosted Trees)",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.0003013168375686924,
+      "ece": 0.00030127140718527734,
+      "latency_us": 107.28274999867911
+    },
+    {
+      "model": "PyTorch MLP (Calibrated with T-Scaling)",
+      "accuracy": 0.16666666666666666,
+      "macro_f1": 0.047619047619047616,
+      "log_loss": 1.868755578994751,
+      "ece": 0.18241157134373984,
+      "latency_us": 6.246333331697921
+    },
+    {
+      "model": "Logistic Regression (Linear Baseline)",
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "log_loss": 0.21638695895671844,
+      "ece": 0.17612807601690292,
+      "latency_us": 2.3426249981639558
+    }
+  ],
+  "best_unsupervised": "Isolation Forest (Ensemble Trees)",
+  "best_supervised": "LightGBM (Gradient Boosted Trees)"
+}

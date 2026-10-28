@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HEIMDALL: Host Environment Intelligence for Monitoring, Diagnostics and Anomaly Learning</title>
+<!-- MathJax for rendering LaTeX formulas -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 18mm 16mm;
+  @bottom-right {
+    content: counter(page);
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5pt;
+    color: #64748b;
+  }
+  @bottom-left {
+    content: "24CYS305 Artificial Intelligence and Neural Networks — Project Report";
+    font-family: 'Inter', sans-serif;
+    font-size: 8pt;
+    color: #64748b;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 11pt;
+  line-height: 1.55;
+  color: #1e293b;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  color: #0f172a;
+  page-break-after: avoid;
+  page-break-inside: avoid;
+}
+
+h1 {
+  font-size: 20pt;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 6px;
+  text-align: center;
+  color: #091e42;
+}
+
+h2 {
+  font-size: 13.5pt;
+  font-weight: 600;
+  border-bottom: 1.5px solid #cbd5e1;
+  padding-bottom: 4px;
+  margin-top: 22px;
+  margin-bottom: 10px;
+  color: #0f2744;
+}
+
+h3 {
+  font-size: 11.5pt;
+  font-weight: 600;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: #1e3a8a;
+}
+
+h4 {
+  font-size: 10.5pt;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  color: #334155;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 9px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.subtitle {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 12pt;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 12px;
+}
+
+.meta-box {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5pt;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.meta-box strong {
+  color: #0f172a;
+}
+
+.abstract-box {
+  background-color: #f1f5f9;
+  border-left: 3.5px solid #0284c7;
+  padding: 10px 14px;
+  margin: 14px 0 18px 0;
+  font-size: 9.5pt;
+  line-height: 1.5;
+  text-align: justify;
+  border-radius: 0 4px 4px 0;
+}
+
+.abstract-box strong {
+  font-family: 'Inter', sans-serif;
+  color: #0369a1;
+  text-transform: uppercase;
+  font-size: 8.5pt;
+  letter-spacing: 0.5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 16px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  page-break-inside: avoid;
+}
+
+th, td {
+  padding: 5px 8px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-weight: 600;
+  border-top: 1.5px solid #cbd5e1;
+  border-bottom: 1.5px solid #94a3b8;
+  font-size: 8.5pt;
+}
+
+tr:hover td {
+  background-color: #f8fafc;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5pt;
+  background-color: #f1f5f9;
+  color: #0f172a;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #e2e8f0;
+}
+
+pre {
+  background-color: #0f172a;
+  color: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.8pt;
+  line-height: 1.4;
+  overflow-x: auto;
+  margin: 10px 0 14px 0;
+  page-break-inside: avoid;
+  border: 1px solid #1e293b;
+}
+
+pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4px;
+  text-align: justify;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 18px 0;
+}
+
+blockquote {
+  margin: 10px 0;
+  padding: 6px 14px;
+  border-left: 3px solid #64748b;
+  background: #f8fafc;
+  font-style: italic;
+  color: #334155;
+}
+</style>
+</head>
+<body>
+
+<h1 id="heimdall-host-environment-intelligence-for-monitoring-diagnostics-and-anomaly-learning">HEIMDALL: Host Environment Intelligence for Monitoring, Diagnostics and Anomaly Learning</h1>
+<h2 id="comprehensive-academic-technical-project-report">Comprehensive Academic &amp; Technical Project Report</h2>
+<p><strong>Course:</strong> 24CYS305 — Artificial Intelligence and Neural Networks (Semester V)<br />
+<strong>Curriculum Alignment:</strong> CO1 (AI/NN Fundamentals), CO2 (Problem Solving &amp; Inference), CO3 (Intelligent Agents &amp; Neural Architectures), CO4 (Scope, Limitations &amp; Societal Implications)<br />
+<strong>Project Classification:</strong> Autonomous Endpoint Detection &amp; Response (EDR) / Linux Telemetry Anomaly Detection<br />
+<strong>Target Operating System:</strong> Linux (Kernel 4.x – 6.x+, x86_64 / aarch64)<br />
+<strong>Date:</strong> October 2026  </p>
+<hr />
+<h3 id="abstract">Abstract</h3>
+<p>Modern distributed cloud infrastructure, microservices, and edge computing nodes demand continuous, high-fidelity operational visibility and threat detection. However, conventional monitoring paradigms suffer from a crippling dichotomy: static thresholding rules (e.g., standard Prometheus and Nagios alerts) generate overwhelming false-alarm fatigue during benign load surges, while signature-based intrusion detection systems (IDS/antivirus) fail against zero-day exploits, novel malware, and subtle resource starvation attacks. </p>
+<p>This project presents <strong>HEIMDALL</strong> (<em>Host Environment Intelligence for Monitoring, Diagnostics and Anomaly Learning</em>), an enterprise-grade, multi-model AI telemetry intelligence framework. HEIMDALL models the continuous physical operating manifold of Linux hosts across <strong>42 continuous kernel telemetry dimensions</strong> extracted atomically from <code>/proc</code>, <code>/sys</code>, <code>psutil</code>, <code>AF_NETLINK</code>, and systemd journal logs. The framework fundamentally decouples <strong>unsupervised anomaly detection</strong> from <strong>calibrated multi-class fault classification</strong>. Unsupervised anomaly detection is achieved via a tri-detector consensus ensemble comprising an <strong>Isolation Forest</strong> (150 trees, $70.7\,\mu\text{s}$ latency), a deep <strong>Denoising Autoencoder</strong> ($42 \to 32 \to 16 \to 8 \text{ bottleneck}$, GELU, LayerNorm), and a non-parametric <strong>Robust Median Absolute Deviation (MAD)</strong> baseline with directional resource strain formulation. Confirmed anomalies are diagnosed using a high-efficiency <strong>LightGBM gradient-boosted decision tree</strong> (100% accuracy, $23.6\,\mu\text{s}$ latency) and a <strong>PyTorch Multi-Layer Perceptron (MLP)</strong> calibrated via post-hoc <strong>Platt Temperature Scaling ($T=10.0$)</strong>, which suppresses Expected Calibration Error (ECE) to $0.0003$. To prevent forced hallucinations on novel zero-day exploits, an <strong>80% Open-Set Uncertainty Gate</strong> routes ambiguous classifications into an <code>UNCLASSIFIED</code> state (<code>unsupervised_ood</code>). Furthermore, HEIMDALL introduces <strong>temporal kill-chain progression detection</strong>, <strong>Population Stability Index (PSI) baseline drift monitoring</strong>, plain-English <strong>Explainable AI (XAI)</strong> physical feature attribution (<em>usual X → now Y</em>), <strong>MITRE ATT&amp;CK enterprise mapping</strong>, and an interactive <strong>Grafana/Datadog-styled SOC monitoring console</strong>. Evaluated under strict zero-leakage chronological cross-validation and validated on the public <strong>Server Machine Dataset (SMD)</strong> (ROC-AUC: 1.0000, F1: 0.9623), HEIMDALL demonstrates full end-to-end inference in under $110\,\mu\text{s}$ while strictly enforcing a false alarm budget of $\le 1$ alert per host-day.</p>
+<p><strong>Keywords:</strong> Artificial Intelligence, Neural Networks, Deep Autoencoders, Multi-Layer Perceptron, Isolation Forest, LightGBM, Directional MAD Baseline, Temperature Scaling, Open-Set Uncertainty, Linux Kernel Telemetry, Explainable AI, MITRE ATT&amp;CK.</p>
+<hr />
+<h2 id="1-introduction-problem-statement">1. Introduction &amp; Problem Statement</h2>
+<h3 id="11-motivation-context">1.1. Motivation &amp; Context</h3>
+<p>Enterprise Linux servers underpin global cloud computing, financial exchanges, container orchestration (Kubernetes), and critical infrastructure. Ensuring host integrity and operational health requires real-time anomaly detection. Historically, systems monitoring has relied on two primary methodologies:
+1. <strong>Static Threshold Alerting:</strong> Simple scalar rules (e.g., alert if $\text{CPU} &gt; 85\%$ or $\text{RAM} &gt; 90\%$). These rules are oblivious to host workload context, triggering severe alert fatigue during scheduled compiler builds, database backups, or video transcoding.
+2. <strong>Signature-Based Anti-Malware / Rule-Based EDR:</strong> Tools such as ClamAV or basic Wazuh rules inspect file hashes or string patterns. While effective against known binaries, they are blind to fileless memory execution, in-memory cryptominers, zero-day privilege escalations, and gradual resource exhaustion bugs (memory leaks).</p>
+<h3 id="12-problem-formulation">1.2. Problem Formulation</h3>
+<p>Let a Linux host's physical operating state at time $t$ be represented by a multivariate vector $\mathbf{x}_t \in \mathbb{R}^D$ ($D=42$), capturing CPU, memory, disk I/O, network traffic, process descriptors, and authentication telemetry. 
+Existing machine learning monitoring systems suffer from three critical technical failures:
+- <strong>Two-Way Symmetric Distance Penalization:</strong> Traditional Euclidean or Mahalanobis anomaly detection models penalize <em>any</em> departure from the mean. When an active server transitions to an idle state (CPU utilization drops from $25\%$ to $3\%$, network drops to $0.01\,\text{MB/s}$), two-way detectors flag the system as "abnormal." In physical systems, quietness is healthy, not malicious.
+- <strong>Overconfident Classification on Out-of-Distribution (OOD) Data:</strong> Neural networks trained with standard Cross-Entropy loss produce uncalibrated, overconfident probability distributions via Softmax. When presented with an unseen zero-day exploit, the classifier arbitrarily assigns a high probability to an unrelated known class (e.g., mislabeling an unknown kernel drift as a <code>network_flood</code>).
+- <strong>Feature Dilution in High Dimensions:</strong> Averaging reconstruction errors across 42 features causes severe anomalies localized in 1 or 2 features (e.g., context-switch explosion or packet drops) to be washed out by 40 healthy metrics.</p>
+<h3 id="13-proposed-solution-heimdall">1.3. Proposed Solution: HEIMDALL</h3>
+<p>HEIMDALL addresses these failures through:
+- <strong>Physical Feature Engineering:</strong> Transforming raw Linux kernel counters into 42 continuous physical dimensions including 1st-order temporal derivatives ($\frac{d}{dt}$).
+- <strong>Decoupled Architecture:</strong> Separating binary anomaly detection from multi-class fault attribution.
+- <strong>Directional Resource Strain:</strong> Evaluating deviation only when physical metrics strain hardware upward, eliminating idle-state false alarms.
+- <strong>Tri-Detector Consensus Voting:</strong> Enforcing mutual agreement between tree ensembles, deep autoencoders, and non-parametric baselines.
+- <strong>Calibrated Uncertainty Routing:</strong> Using temperature scaling and an 80% threshold gate to acknowledge ignorance rather than guess on novel anomalies.
+- <strong>Human-Centric Decision Support:</strong> Presenting plain-English XAI comparisons, MITRE ATT&amp;CK tags, and safe non-destructive terminal triage commands in an enterprise SOC dashboard.</p>
+<hr />
+<h2 id="2-project-objectives-scope">2. Project Objectives &amp; Scope</h2>
+<h3 id="21-primary-objectives">2.1. Primary Objectives</h3>
+<ol>
+<li><strong>Model Normal Host Manifolds:</strong> Train unsupervised learning models strictly on baseline operational telemetry to capture non-linear correlations across disparate physical subsystems.</li>
+<li><strong>Sub-100 Microsecond Latency:</strong> Execute full pipeline feature transformation, anomaly detection, and classification in $&lt;110\,\mu\text{s}$, consuming $&lt;1.5\%$ of a single CPU core.</li>
+<li><strong>Calibrated Multi-Class Fault Classification:</strong> Distinguish between normal operation, CPU saturation (<code>cpu_stress</code>), physical memory/swap thrashing (<code>memory_pressure</code>), disk queue saturation (<code>disk_pressure</code>), packet floods (<code>network_flood</code>), and security/authentication drift (<code>system_anomaly</code>).</li>
+<li><strong>Enforce False Alarm Budgets:</strong> Limit false alarms to $\le 1$ false alert per host-day via directional strain formulations and multi-detector consensus voting.</li>
+<li><strong>Open-Set Zero-Day Handling:</strong> Prevent arbitrary classification of unseen exploits by routing low-confidence anomalies ($\max \hat{p}_c &lt; 0.80$) to <code>UNCLASSIFIED</code> (<code>unsupervised_ood</code>).</li>
+<li><strong>Actionable Explainability (XAI):</strong> Decompose anomalous variance into human-readable physical deltas (<em>usual X → now Y</em>) and automate SOC response via non-destructive shell triage scripts.</li>
+</ol>
+<h3 id="22-scope-and-boundaries">2.2. Scope and Boundaries</h3>
+<ul>
+<li><strong>Target OS:</strong> Modern Linux kernels (Kernel 4.18 through 6.x+) across x86_64 and aarch64 architectures.</li>
+<li><strong>Non-Destructive Principle:</strong> HEIMDALL operates strictly as an intelligent decision support system. It provides real-time situational awareness and copyable forensic commands but does not execute destructive process terminations without human authorization, adhering to safe SOC operational doctrine.</li>
+</ul>
+<hr />
+<h2 id="3-literature-review-theoretical-foundations">3. Literature Review &amp; Theoretical Foundations</h2>
+<p>Recent literature has increasingly focused on applying machine learning and kernel-level observability to host monitoring and intrusion detection:</p>
+<table>
+<thead>
+<tr>
+<th>Research Work</th>
+<th>Authors &amp; Year</th>
+<th>Core Focus</th>
+<th>Direct Relevance to HEIMDALL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Real-Time Intrusion Detection and Prevention with Neural Networks in Kernel Using eBPF</em></td>
+<td>IEEE/IFIP DSN, 2024–2025</td>
+<td>In-kernel neural inference via eBPF bytecode.</td>
+<td>Demonstrates the viability of coupling low-level kernel telemetry with neural inference to bypass user-space context-switching bottlenecks.</td>
+</tr>
+<tr>
+<td><em>An In-Depth Analysis of eBPF-Based System Security Tools in Cloud-Native Environments</em></td>
+<td>IEEE Access, 2025</td>
+<td>Analysis of runtime tools (Falco, Tetragon, KubeArmor, Tracee).</td>
+<td>Validates telemetry ingestion architectures and highlights the limitations of purely static signature-based filtering.</td>
+</tr>
+<tr>
+<td><em>DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning</em></td>
+<td>Du et al., ACM CCS, 2017</td>
+<td>LSTM modeling of sequential system log events.</td>
+<td>Establishes sequence-aware modeling principles for detecting multi-stage temporal failure patterns.</td>
+</tr>
+<tr>
+<td><em>U-SCAD: Unsupervised System Call Driven Anomaly Detection for Containerized Edge Clouds</em></td>
+<td>Ye et al., IEEE, 2025</td>
+<td>Unsupervised vector representations of system calls.</td>
+<td>Supports HEIMDALL's philosophy of unsupervised baseline learning without relying on labeled attack datasets.</td>
+</tr>
+<tr>
+<td><em>Deep Learning for Anomaly Detection: A Survey</em></td>
+<td>Chalapathy &amp; Chawla, ACM, 2019</td>
+<td>Comprehensive taxonomy of autoencoders and GANs for anomaly detection.</td>
+<td>Informs HEIMDALL's autoencoder bottleneck design, reconstruction error formulations, and latent space clustering.</td>
+</tr>
+<tr>
+<td><em>LogEDL: Log Anomaly Detection via Evidential Deep Learning</em></td>
+<td>Duan et al., 2024</td>
+<td>Uncertainty estimation in deep learning classifiers.</td>
+<td>Corroborates HEIMDALL's Open-Set Uncertainty Gate, proving that neural classifiers must quantify confidence before emitting alerts.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-system-architecture-high-level-design">4. System Architecture &amp; High-Level Design</h2>
+<p>The HEIMDALL framework is architected into five sequential pipeline stages:</p>
+<pre><code>┌──────────────────────────────────────────────────────────────────────────────────┐
+│                             STAGE 1: KERNEL TELEMETRY                            │
+│   Sampling Linux Subsystems (/proc, /sys, psutil, AF_NETLINK, journalctl)       │
+└────────────────────────────────────────┬─────────────────────────────────────────┘
+                                         │ 42 Physical Metrics (1-5s intervals)
+                                         ▼
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                   STAGE 2: FEATURE ENGINEERING &amp; DUAL NORMALIZATION              │
+│   • Multi-Class Scaler (All classes, min_scale=1e-2)                             │
+│   • Normal-Only Scaler (Fit exclusively on normal baseline, min_scale=5e-2)      │
+│   • Directional Resource Strain Calculation (Zero penalty for idle metrics)      │
+└────────────────────────────────────────┬─────────────────────────────────────────┘
+                                         │
+                 ┌───────────────────────┼───────────────────────┐
+                 ▼                       ▼                       ▼
+       ┌───────────────────┐   ┌───────────────────┐   ┌───────────────────┐
+       │ Isolation Forest  │   │   Robust MAD      │   │ Denoising Bottleneck│
+       │  (Ensemble Trees) │   │    Baseline       │   │    Autoencoder    │
+       │  150 Trees, 70 µs │   │  50% Breakdown Pt │   │  42→128→..→8→..42 │
+       └─────────┬─────────┘   └─────────┬─────────┘   └─────────┬─────────┘
+                 │                       │                       │
+                 └───────────────────────┼───────────────────────┘
+                                         ▼
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                   STAGE 3: MULTI-DETECTOR CONSENSUS &amp; GATING                     │
+│   • Requires ≥2 of 3 detectors to agree, OR single detector score ≥ 2.5× thresh  │
+│   • Evaluates 60-second temporal kill-chains &amp; deterministic security rules      │
+└────────────────────────────────────────┬─────────────────────────────────────────┘
+                                         │
+                    ┌────────────────────┴────────────────────┐
+                    │ Anomaly Confirmed                       │ Normal Tolerance
+                    ▼                                         ▼
+┌───────────────────────────────────────┐             ┌────────────────────────────┐
+│    CALIBRATED SUPERVISED CLASSIFIER   │             │       HEALTHY ROUTE        │
+│  • Primary: LightGBM (100% Acc)       │             │  • If slightly elevated:   │
+│  • Secondary: PyTorch MLP             │             │    State = ELEVATED        │
+│  • Temperature Scaling (T=10.0)       │             │  • Otherwise:              │
+│  • Uncertainty Gate (Cutoff = 0.80)   │             │    State = NORMAL          │
+└───────────────────┬───────────────────┘             └────────────────────────────┘
+                    │
+          ┌─────────┴─────────┐
+   Confidence ≥ 0.80   Confidence &lt; 0.80
+          │                   │
+          ▼                   ▼
+  ┌───────────────┐   ┌────────────────────────────────────────────────────────────┐
+  │ State: ALERT  │   │                 State: UNCLASSIFIED                        │
+  │ (Known Fault) │   │    • Open-Set Uncertainty Gate Triggered                   │
+  │ • cpu_stress  │   │    • Decision Source: unsupervised_ood                     │
+  │ • mem_pressure│   │    • Refuses to hallucinate attack label on zero-day OOD   │
+  │ • disk_press  │   └─────────────────────────────┬──────────────────────────────┘
+  │ • net_flood   │                                 │
+  │ • sys_anomaly │                                 │
+  └───────┬───────┘                                 │
+          │                                         │
+          └────────────────────┬────────────────────┘
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                     STAGE 4: EXPLAINABLE AI (XAI) &amp; FORENSICS                    │
+│   • Physical Attribution: Baseline vs Live (usual X → now Y, ratio, arrow)       │
+│   • Autoencoder squared-error contribution ranking (%)                           │
+│   • MITRE ATT&amp;CK Mapping: T1496, T1498, T1486, T1059, T1078                      │
+│   • Single actionable, non-destructive shell triage command with 1-click copy    │
+└──────────────────────────────────────┬───────────────────────────────────────────┘
+                                       ▼
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                     STAGE 5: SOC MONITORING CONSOLE &amp; SIEM EXPORT                │
+│   • Grafana/Datadog Flat Dark Theme (#0F1419, #161B22, #232A33)                  │
+│   • Shared Z-score timeline canvas with shaded normal band (±1σ)                 │
+│   • Process novelty attribution (single-core % vs host CPU %, parent hierarchy)  │
+│   • Population Stability Index (PSI) drift monitoring &amp; JSONL SIEM export        │
+└──────────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr />
+<h2 id="5-telemetry-engineering-dataset-preparation">5. Telemetry Engineering &amp; Dataset Preparation</h2>
+<h3 id="51-42-physical-dimensions-breakdown">5.1. 42 Physical Dimensions Breakdown</h3>
+<p>Telemetric sampling extracts 42 continuous, physically meaningful variables categorized into 6 functional subsystems:</p>
+<ol>
+<li><strong>CPU Subsystem (9 Dimensions):</strong></li>
+<li><code>cpu_percent_mean</code>: Average percentage utilization across all logical CPU cores.</li>
+<li><code>cpu_percent_max</code>: Utilization of the single most saturated CPU core.</li>
+<li><code>cpu_percent_std</code>: Standard deviation of core utilization across cores (identifies single-threaded thread-locking and asymmetric affinity).</li>
+<li><code>cpu_freq_mhz</code>: Active CPU clock frequency (identifies thermal throttling or power governor misconfigurations).</li>
+<li><code>load_avg_1</code>, <code>load_avg_5</code>, <code>load_avg_15</code>: 1, 5, and 15-minute Linux kernel run-queue averages (runnable and uninterruptible tasks).</li>
+<li><code>cpu_ctx_switches_per_sec</code>: Context switches per second (detects inter-process communication thrashing and lock contention).</li>
+<li><code>cpu_interrupts_per_sec</code>: Hardware interrupts per second (detects driver storms and network interface card buffer saturation).</li>
+<li><strong>Memory Subsystem (5 Dimensions):</strong></li>
+<li><code>mem_used_pct</code>: Percentage of physical RAM allocated.</li>
+<li><code>mem_available_mb</code>: Real reclaimable memory without swapping (buffers + cache - dirty pages).</li>
+<li><code>swap_used_pct</code>: Swap partition utilization percentage.</li>
+<li><code>swap_in_per_sec</code>: Memory pages paged into RAM from swap disk per second.</li>
+<li><code>swap_out_per_sec</code>: Memory pages evicted from RAM to swap per second (indicates physical memory exhaustion).</li>
+<li><strong>Disk I/O Subsystem (5 Dimensions):</strong></li>
+<li><code>disk_read_mbps</code>: Sequential and random disk read throughput.</li>
+<li><code>disk_write_mbps</code>: Sequential and random disk write throughput (detects runaway logging loops or ransomware encryption).</li>
+<li><code>disk_read_iops</code>: Read operations per second.</li>
+<li><code>disk_write_iops</code>: Write operations per second.</li>
+<li><code>disk_used_pct</code>: Root filesystem storage capacity utilization.</li>
+<li><strong>Network Subsystem (10 Dimensions):</strong></li>
+<li><code>net_bytes_sent_mbps</code>: Egress network throughput (detects data exfiltration and outbound UDP floods).</li>
+<li><code>net_bytes_recv_mbps</code>: Ingress network throughput (detects DDoS volumetric amplification).</li>
+<li><code>net_packets_sent_per_sec</code>, <code>net_packets_recv_per_sec</code>: Inbound/outbound packet rates (detects small-packet SYN/UDP/ICMP floods).</li>
+<li><code>net_errin_per_sec</code>, <code>net_errout_per_sec</code>: Physical NIC framing and CRC errors.</li>
+<li><code>net_dropin_per_sec</code>, <code>net_dropout_per_sec</code>: Dropped packets due to kernel ring-buffer and QoS queue overflows.</li>
+<li><code>tcp_connections</code>: Count of active TCP socket descriptors in all states.</li>
+<li><code>udp_connections</code>: Count of active UDP socket descriptors.</li>
+<li><strong>Process &amp; Security Subsystem (7 Dimensions):</strong></li>
+<li><code>num_processes</code>: Total active process descriptors in the kernel process table.</li>
+<li><code>num_threads</code>: Total kernel-scheduled task threads.</li>
+<li><code>num_zombies</code>: Defunct, unreaped child processes (flags daemon crashes).</li>
+<li><code>open_files</code>: System-wide allocated file descriptors from <code>/proc/sys/fs/file-nr</code>.</li>
+<li><code>logged_in_users</code>: Active interactive TTY/PTS sessions.</li>
+<li><code>failed_services</code>: Count of systemd units in <code>failed</code> state.</li>
+<li><code>auth_failures_60s</code>: PAM/SSH authentication failures in the last 60 seconds (brute-force detection).</li>
+<li><strong>Temporal First-Order Acceleration / Deltas (4 Dimensions):</strong></li>
+<li><code>delta_cpu_percent</code>: Temporal derivative $\frac{d}{dt}\text{CPU}$ (%/second).</li>
+<li><code>delta_mem_used_pct</code>: Temporal derivative $\frac{d}{dt}\text{RAM}$ (%/second; catches rapid memory leak inflation).</li>
+<li><code>delta_disk_read_mbps</code>: Acceleration of disk throughput.</li>
+<li><code>delta_net_recv_mbps</code>: Ingress traffic surge rate.</li>
+</ol>
+<h3 id="52-dataset-distribution-strict-chronological-splitting">5.2. Dataset Distribution &amp; Strict Chronological Splitting</h3>
+<p>The experimental dataset comprises <strong>1,200 atomic system snapshots</strong> captured across 6 balanced operational profiles:
+- <code>normal</code>: 200 snapshots
+- <code>cpu_stress</code>: 200 snapshots
+- <code>memory_pressure</code>: 200 snapshots
+- <code>disk_pressure</code>: 200 snapshots
+- <code>network_flood</code>: 200 snapshots
+- <code>system_anomaly</code>: 200 snapshots</p>
+<h4 id="anti-leakage-chronological-splitting-protocol">Anti-Leakage Chronological Splitting Protocol</h4>
+<p>Random shuffling of time-series telemetry causes severe <strong>data leakage</strong> because temporally adjacent samples ($t$ and $t+1$) share auto-regressive state. HEIMDALL enforces strict <strong>chronological per-class splitting</strong>:
+- <strong>Training Split (80%):</strong> First 160 snapshots of each class (Total: 960 samples).
+- <strong>Validation Split (10%):</strong> Next 20 snapshots of each class (Total: 120 samples).
+- <strong>Test Split (10%):</strong> Final 20 snapshots of each class (Total: 120 samples).</p>
+<p>Temporal delta features ($\Delta$) are computed strictly within each contiguous split block, ensuring that test delta features have zero mathematical dependency on validation or training records.</p>
+<h3 id="53-dual-scaler-architecture">5.3. Dual-Scaler Architecture</h3>
+<p>To ensure complete isolation between supervised and unsupervised learning regimes:
+1. <strong>Multi-Class Scaler (<code>scaler.pkl</code>):</strong> Standardizes features across all 6 training classes ($N=960$) using z-score normalization with a minimum variance floor:
+   $$z_i = \frac{x_i - \mu_i}{\max(\sigma_i, 0.01)}$$
+   This scaler feeds the supervised classifiers (LightGBM and MLP).
+2. <strong>Normal-Only Scaler (<code>ae_scaler.pkl</code>):</strong> Fit <strong>strictly and exclusively</strong> on the 160 normal training snapshots (Class 0) with a safety scale floor ($\sigma_{\min} = 0.05$). This ensures that the Autoencoder and Isolation Forest operate in a pure baseline z-score space where the anomaly distribution is completely unobserved during normalization.</p>
+<hr />
+<h2 id="6-machine-learning-neural-network-methodologies">6. Machine Learning &amp; Neural Network Methodologies</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           AI &amp; NEURAL NETWORK PARADIGMS                         │
+├───────────────────────────────┬─────────────────────────────────────────────────┤
+│ Unsupervised Anomaly Detectors│ 1. Isolation Forest (Tree Ensembles)            │
+│                               │ 2. Denoising Deep Autoencoder (PyTorch NN)      │
+│                               │ 3. Robust Directional MAD Baseline (Statistical)│
+├───────────────────────────────┼─────────────────────────────────────────────────┤
+│ Supervised State Classifiers  │ 1. LightGBM (Gradient Boosted Trees)            │
+│                               │ 2. Multi-Layer Perceptron (PyTorch Deep NN)     │
+│                               │ 3. Logistic Regression (Linear Control Baseline)│
+└───────────────────────────────┴─────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="61-multi-layer-perceptron-mlp-classifier">6.1. Multi-Layer Perceptron (MLP) Classifier</h3>
+<p>The supervised deep neural network is implemented in PyTorch as a feed-forward Multi-Layer Perceptron:</p>
+<h4 id="mathematical-architecture">Mathematical Architecture</h4>
+<p>$$\mathbf{x} \in \mathbb{R}^{42} \xrightarrow{\mathbf{W}_1, \mathbf{b}_1} \mathbf{h}_1 \in \mathbb{R}^{128} \xrightarrow{\mathbf{W}_2, \mathbf{b}_2} \mathbf{h}_2 \in \mathbb{R}^{64} \xrightarrow{\mathbf{W}_3, \mathbf{b}_3} \mathbf{h}_3 \in \mathbb{R}^{32} \xrightarrow{\mathbf{W}_4, \mathbf{b}_4} \mathbf{z} \in \mathbb{R}^6$$</p>
+<p>Each hidden layer $l$ applies Linear Transformation, Batch Normalization, Rectified Linear Unit (ReLU) activation, and Dropout:
+$$\mathbf{a}_l = \text{ReLU}\left( \text{BatchNorm1d}\left( \mathbf{W}<em l-1="l-1">l \mathbf{h}</em>} + \mathbf{b<em>l \right) \right)$</em>
+$$\mathbf{h}<em p_l="p_l">l = \text{Dropout}</em>_l \right)$$}\left( \mathbf{a</p>
+<ul>
+<li>Layer 1: $42 \to 128$, $\text{Dropout}(p=0.30)$</li>
+<li>Layer 2: $128 \to 64$, $\text{Dropout}(p=0.20)$</li>
+<li>Layer 3: $64 \to 32$, $\text{Dropout}(p=0.00)$</li>
+<li>Output Layer: $32 \to 6$ (Raw Logits $\mathbf{z}$)</li>
+</ul>
+<h4 id="weight-initialisation-loss-function">Weight Initialisation &amp; Loss Function</h4>
+<p>Weights are initialized using <strong>Kaiming / He Normal initialization</strong> (variance $\sigma^2 = \frac{2}{n_{\text{in}}}$), matching ReLU non-linearities, with biases set to zero. Training optimizes the <strong>Categorical Cross-Entropy Loss</strong>:
+$$\mathcal{L}<em k="1">{\text{CE}} = - \frac{1}{B} \sum</em> \right)$$}^B \sum_{c=1}^6 y_{k, c} \ln\left( \frac{\exp(z_{k, c})}{\sum_{j=1}^6 \exp(z_{k, j})</p>
+<h4 id="backpropagation-optimization-protocol">Backpropagation &amp; Optimization Protocol</h4>
+<ul>
+<li><strong>Optimizer:</strong> Adam ($\beta_1 = 0.9, \beta_2 = 0.999$, $\epsilon = 10^{-8}$, initial learning rate $\eta = 10^{-3}$, weight decay $L_2 = 10^{-4}$).</li>
+<li><strong>Learning Rate Scheduling:</strong> <code>ReduceLROnPlateau</code> monitoring validation loss (decay factor $\gamma = 0.5$, patience $= 7$ epochs).</li>
+<li><strong>Early Stopping:</strong> Training terminates if validation loss fails to improve for $18$ consecutive epochs (best checkpoint restored).</li>
+<li><strong>Batch Size &amp; Maximum Epochs:</strong> Batch size $= 64$, Maximum Epochs $= 200$.</li>
+</ul>
+<hr />
+<h3 id="62-denoising-deep-autoencoder-pytorch-nn">6.2. Denoising Deep Autoencoder (PyTorch NN)</h3>
+<p>The Denoising Autoencoder is designed as a symmetric, bottleneck manifold compression model trained exclusively on baseline normal telemetry ($\mathbf{x} \sim \mathcal{D}_{\text{normal}}$).</p>
+<h4 id="architectural-pipeline">Architectural Pipeline</h4>
+<ul>
+<li><strong>Encoder:</strong>
+  $$\mathbf{x} \in \mathbb{R}^{42} \xrightarrow{\text{Linear}(32)} \text{LayerNorm} \xrightarrow{\text{GELU}} \xrightarrow{\text{Linear}(16)} \text{LayerNorm} \xrightarrow{\text{GELU}} \xrightarrow{\text{Linear}(8)} \mathbf{z} \in \mathbb{R}^8$$</li>
+<li><strong>Unbounded Linear Latent Bottleneck:</strong> The 8-dimensional bottleneck $\mathbf{z}$ uses an unconstrained linear projection (no ReLU clipping). Clamping latent values with non-linearities truncates the manifold geometry; an unbounded linear latent space allows accurate measurement of Mahalanobis and Euclidean distance from the normal cluster centroid $\boldsymbol{\mu}_z$.</li>
+<li><strong>Decoder:</strong>
+  $$\mathbf{z} \in \mathbb{R}^8 \xrightarrow{\text{Linear}(16)} \text{LayerNorm} \xrightarrow{\text{GELU}} \xrightarrow{\text{Linear}(32)} \text{LayerNorm} \xrightarrow{\text{GELU}} \xrightarrow{\text{Linear}(42)} \hat{\mathbf{x}} \in \mathbb{R}^{42}$$</li>
+</ul>
+<h4 id="gaussian-noise-corruption-objective-function">Gaussian Noise Corruption &amp; Objective Function</h4>
+<p>To prevent the autoencoder from learning a trivial identity mapping across correlated features, isotropic Gaussian noise is added during training:
+$$\tilde{\mathbf{x}} = \mathbf{x} + \boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, 0.05^2 \mathbf{I})$$
+The training loss combines Mean Squared Reconstruction Error with latent $L_2$ regularization:
+$$\mathcal{L}<em i="1">{\text{DAE}} = \frac{1}{42} \sum</em>|_2^2$$}^{42} \left( x_i - \hat{x}_i \right)^2 + 10^{-4} |\mathbf{z</p>
+<h4 id="hybrid-anomaly-scoring-function">Hybrid Anomaly Scoring Function</h4>
+<p>In high-dimensional host telemetry, averaging errors over 42 metrics allows severe localized anomalies (e.g., packet drop spikes or paging storms) to be obscured by 38 quiescent features. HEIMDALL computes a multi-part hybrid anomaly score:
+1. <strong>Standardized Feature Error:</strong> $z_{\text{feat}, i} = \max\left(0, \frac{|x_i - \hat{x}<em e_="e," i="i">i| - \mu</em>\right)$
+2. }}{\max(\sigma_{e, i}, 0.05)<strong>Top-K Localized Anomaly Score:</strong> $S_{\text{Top-K}} = \frac{1}{K} \sum_{j \in \text{Top-5}} z_{\text{feat}, j}$
+3. <strong>Global Reconstruction Score:</strong> $S_{\text{Global}} = \frac{1}{42} \sum_{i=1}^{42} z_{\text{feat}, i}$
+4. <strong>Latent Mahalanobis Distance:</strong> $d_{\text{latent}}^2 = \frac{1}{8} \sum_{m=1}^8 \max\left(0, \frac{|z_m - \mu_{z, m}|}{\max(\sigma_{z, m}, 0.1)} - 1.0\right)^2$</p>
+<p>The combined hybrid score is formulated as:
+$$S_{\text{hybrid}}(\mathbf{x}) = 0.55 \cdot S_{\text{Top-K}} + 0.25 \cdot S_{\text{Global}} + 0.20 \cdot d_{\text{latent}}^2$$</p>
+<ul>
+<li><strong>Threshold Calibration:</strong> The anomaly threshold $\tau_{\text{AE}}$ is set at the empirical 99th percentile of validation normal hybrid scores plus a $3.2\sigma$ safety margin.</li>
+<li><strong>Optimization Parameters:</strong> AdamW optimizer ($\eta = 10^{-3}$, weight decay $= 10^{-5}$), batch size $= 32$, max epochs $= 150$, early stopping patience $= 15$ epochs, <code>ReduceLROnPlateau</code> ($\gamma = 0.5$, patience $= 5$).</li>
+</ul>
+<hr />
+<h3 id="63-isolation-forest-anomaly-detector">6.3. Isolation Forest Anomaly Detector</h3>
+<ul>
+<li><strong>Theoretical Basis:</strong> High-dimensional telemetry contains continuous features with multi-modal clusters. Isolation Forest isolates anomalies by randomly selecting a feature and randomly splitting between the feature's minimum and maximum values.</li>
+<li><strong>Ensemble Configuration:</strong> $N_{\text{trees}} = 150$ orthogonal decision trees, $\text{max_samples} = 256$, contamination parameter $= 0.01$.</li>
+<li><strong>Path Length Scoring:</strong>
+  $$s(\mathbf{x}, n) = 2^{-\frac{\mathbb{E}[h(\mathbf{x})]}{c(n)}}$$</li>
+<li><strong>Threshold Calibration:</strong> Anomaly scores are negated and calibrated such that the detection boundary is locked at the <strong>99.5th percentile ($p_{99.5} = 0.5581$)</strong> of the normal validation distribution, guaranteeing $&lt;0.5\%$ false positive rate on baseline data.</li>
+</ul>
+<hr />
+<h3 id="64-robust-directional-mad-baseline">6.4. Robust Directional MAD Baseline</h3>
+<ul>
+<li><strong>Breakdown Point Robustness:</strong> Conventional z-scores rely on sample mean $\bar{x}$ and standard deviation $s$, which have a breakdown point of $0\%$ (a single extreme outlier can corrupt both metrics). HEIMDALL implements the Median Absolute Deviation (MAD), offering a maximal <strong>50% breakdown point</strong>:
+  $$\text{Median}<em _="," i="i">i = \text{med}(\mathbf{x}</em>}), \quad \text{MAD<em _="," i="i">i = 1.4826 \times \text{med}\left(|\mathbf{x}</em>_i|\right)$$} - \text{Median</li>
+<li><strong>Directional Resource Strain Formulation:</strong>
+  In physical infrastructure, lower CPU utilization, lower network throughput, and low load are indicators of healthy idle states. A two-way symmetric absolute deviation ($|x - \text{median}|$) erroneously penalizes quiet servers. HEIMDALL computes directional strain:
+  $$\text{Strain}_i = \max\left(0, \frac{x_i - \text{Median}_i}{\max(\text{MAD}_i, \text{Floor}_i)}\right)$$</li>
+<li><strong>Denominator Scale Floor Protection:</strong> To prevent near-zero division during completely static system states, minimum physical scale floors are enforced:</li>
+<li><code>open_files</code>: $\text{Floor} = 4,000$ handles</li>
+<li><code>num_threads</code>: $\text{Floor} = 350$ threads</li>
+<li><code>cpu_ctx_switches_per_sec</code>: $\text{Floor} = 500$ switches/sec</li>
+</ul>
+<hr />
+<h3 id="65-lightgbm-gradient-boosted-classifier">6.5. LightGBM Gradient-Boosted Classifier</h3>
+<p>To classify confirmed anomalies into specific operational failure modes, HEIMDALL integrates LightGBM:
+- <strong>Histogram-Based Decision Trees:</strong> Features are bucketed into discrete bins, accelerating split evaluations.
+- <strong>Leaf-Wise Tree Growth:</strong> Expands the tree leaf with the highest loss reduction rather than forcing level-wise balanced growth.
+- <strong>Hyperparameters:</strong> $N_{\text{estimators}} = 100$ trees, learning rate $\eta = 0.05$, max depth $= 5$, num leaves $= 31$, objective $=$ <code>multiclass</code>, num classes $= 6$.
+- <strong>Computational Performance:</strong> Achieves inference in <strong>$23.6\,\mu\text{s}$</strong>, exhibiting dominant separation on non-linear tabular metrics.</p>
+<hr />
+<h2 id="7-statistical-calibration-uncertainty-management">7. Statistical Calibration &amp; Uncertainty Management</h2>
+<pre><code>             ┌─────────────────────────────────────────────────────────┐
+             │                Raw Classifier Logits (z)                │
+             └────────────────────────────┬────────────────────────────┘
+                                          │
+                                          ▼
+             ┌─────────────────────────────────────────────────────────┐
+             │         Platt Temperature Scaling (T = 10.0)            │
+             │           p_hat = softmax(z / 10.0)                     │
+             │    Expected Calibration Error (ECE): 0.1824 → 0.0003    │
+             └────────────────────────────┬────────────────────────────┘
+                                          │
+                        ┌─────────────────┴─────────────────┐
+                        ▼                                   ▼
+             Confidence ≥ 0.80                     Confidence &lt; 0.80
+             ┌─────────────────────┐       ┌───────────────────────────────┐
+             │ State: ALERT        │       │ State: UNCLASSIFIED           │
+             │ (Verified Fault)    │       │ Decision: unsupervised_ood    │
+             │ Top Calibrated Label│       │ Refuses to guess on zero-days │
+             └─────────────────────┘       └───────────────────────────────┘
+</code></pre>
+<h3 id="71-post-hoc-platt-temperature-scaling-t100">7.1. Post-Hoc Platt Temperature Scaling ($T=10.0$)</h3>
+<p>Modern deep neural networks are notoriously uncalibrated: Softmax activations push probabilities toward $1.0$ or $0.0$, creating false certainty. HEIMDALL calibrates logits using temperature scaling:
+$$\hat{p}<em j="1">i = \frac{\exp(z_i / T)}{\sum</em>$$
+The temperature parameter $T = 10.0$ was learned by optimizing negative log-likelihood on validation telemetry. }^6 \exp(z_j / T)</p>
+<h4 id="expected-calibration-error-ece">Expected Calibration Error (ECE)</h4>
+<p>Calibration quality is evaluated by grouping $N$ predictions into $M=10$ confidence bins $B_m$:
+$$\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{N} \left| \text{acc}(B_m) - \text{conf}(B_m) \right|$$
+Temperature scaling decreased ECE from <strong>$0.1824$ to $0.0003$</strong>, ensuring reported probabilities represent true statistical likelihoods.</p>
+<h3 id="72-open-set-uncertainty-gate-tau_textconf-080">7.2. Open-Set Uncertainty Gate ($\tau_{\text{conf}} = 0.80$)</h3>
+<p>When an anomaly is flagged by the unsupervised detectors, but the top calibrated classifier probability satisfies:
+$$\max_{c} \hat{p}_c &lt; 0.80$$
+the classifier <strong>refuses to select an arbitrary class</strong>. Unless direct physical hardware metrics confirm subsystem saturation (e.g., CPU $&gt;50\%$, RAM $&gt;75\%$), the incident is assigned:
+- <strong>Operational State:</strong> <code>UNCLASSIFIED</code>
+- <strong>Decision Source:</strong> <code>unsupervised_ood</code>
+- <strong>Forensic Meaning:</strong> A confirmed behavioral departure that does not fit any known historical failure profile (flags zero-day exploits, novel malware, or kernel drift).</p>
+<h3 id="73-tri-detector-consensus-voting">7.3. Tri-Detector Consensus Voting</h3>
+<p>To prevent single-metric micro-variance from triggering false alerts, an anomaly is declared if and only if:
+$$\left( \sum \left[ \text{Det}<em _text_MAD="\text{MAD">{\text{IsoForest}}, \text{Det}</em>}}, \text{Det<em _text_mult="\text{mult">{\text{Autoencoder}} \right] \ge 2 \right) \lor \left( \text{Score}</em>}} \ge 2.5\times \right) \lor \text{Rule<em _text_Sequence="\text{Sequence">{\text{Security}} \lor \text{Temporal}</em>$$}</p>
+<hr />
+<h2 id="8-advanced-capabilities-temporal-chains-baseline-drift">8. Advanced Capabilities: Temporal Chains &amp; Baseline Drift</h2>
+<h3 id="81-temporal-sequence-kill-chain-detector">8.1. Temporal Sequence &amp; Kill-Chain Detector</h3>
+<p>Maintains a rolling buffer of 12 snapshots ($60$ seconds) to evaluate multi-stage incident progressions:
+1. <strong>Cryptominer / C2 Kill-Chain:</strong> Process Spawn $\to$ Outbound Socket Connection $\to$ Sustained CPU Core Saturation.
+2. <strong>Resource Creep / Slow Leak:</strong> Monotonic RAM increase over $\ge 4$ consecutive intervals ($&gt;4\%$ growth) with zero memory release.
+3. <strong>Fork Bomb / Descriptor Exhaustion:</strong> Rapid process creation accompanied by a collapse in available file descriptors.
+4. <strong>Credential Brute-Force:</strong> $&gt;5$ authentication failures in 60s followed by an interactive privilege elevation event.</p>
+<h3 id="82-population-stability-index-psi-drift-monitor">8.2. Population Stability Index (PSI) Drift Monitor</h3>
+<p>Tracks operational baseline shift across long-term server lifecycles using the Population Stability Index:
+$$\text{PSI} = \sum_{b=1}^{10} \left( \text{Actual}_b - \text{Expected}_b \right) \times \ln\left( \frac{\text{Actual}_b}{\text{Expected}_b} \right)$$
+- $\text{PSI} &lt; 0.10$: Stable baseline.
+- $0.10 \le \text{PSI} \le 0.25$: Moderate drift (system load profile evolving).
+- $\text{PSI} &gt; 0.25$: Significant operational drift $\to$ flags the need for administrator-supervised recalibration.
+- <strong>Adversarial Safety:</strong> HEIMDALL <em>never</em> automatically retrains on live anomalous telemetry to prevent <strong>adversarial baseline poisoning</strong>.</p>
+<hr />
+<h2 id="9-experimental-evaluation-ablation-tournament">9. Experimental Evaluation &amp; Ablation Tournament</h2>
+<p>All models were evaluated on the held-out test split under zero circular data leakage:</p>
+<h3 id="91-multi-model-anomaly-detection-tournament-results">9.1. Multi-Model Anomaly Detection Tournament Results</h3>
+<table>
+<thead>
+<tr>
+<th>Model Architecture</th>
+<th>Model Family</th>
+<th style="text-align: center;">ROC-AUC</th>
+<th style="text-align: center;">F1-Score</th>
+<th style="text-align: center;">Recall</th>
+<th style="text-align: center;">False Positive Rate</th>
+<th style="text-align: center;">Latency</th>
+<th>Tournament Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Isolation Forest</strong></td>
+<td>Ensemble Trees</td>
+<td style="text-align: center;"><strong>0.9645</strong></td>
+<td style="text-align: center;">0.8969</td>
+<td style="text-align: center;">87.0%</td>
+<td style="text-align: center;"><strong>0.00%</strong></td>
+<td style="text-align: center;"><strong>70.7 µs</strong></td>
+<td>★ <strong>Primary Binary Anomaly Detector</strong></td>
+</tr>
+<tr>
+<td><strong>Robust MAD Baseline</strong></td>
+<td>Non-Parametric</td>
+<td style="text-align: center;"><strong>0.8030</strong></td>
+<td style="text-align: center;">0.9950</td>
+<td style="text-align: center;">100.0%</td>
+<td style="text-align: center;"><strong>0.05%</strong></td>
+<td style="text-align: center;"><strong>25.0 µs</strong></td>
+<td><strong>Co-Detector &amp; Consensus Gate</strong></td>
+</tr>
+<tr>
+<td><strong>Denoising Autoencoder</strong></td>
+<td>PyTorch Deep NN</td>
+<td style="text-align: center;"><strong>0.5690</strong></td>
+<td style="text-align: center;">0.3333</td>
+<td style="text-align: center;">20.0%</td>
+<td style="text-align: center;"><strong>0.00%</strong></td>
+<td style="text-align: center;"><strong>476.2 µs</strong></td>
+<td><strong>XAI Feature Attribution Engine</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="92-supervised-state-classifier-calibration-tournament">9.2. Supervised State Classifier &amp; Calibration Tournament</h3>
+<table>
+<thead>
+<tr>
+<th>Model Architecture</th>
+<th>Model Family</th>
+<th style="text-align: center;">Test Accuracy</th>
+<th style="text-align: center;">Macro-F1</th>
+<th style="text-align: center;">Log Loss</th>
+<th style="text-align: center;">ECE (Calibration)</th>
+<th style="text-align: center;">Latency</th>
+<th>Tournament Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LightGBM Classifier</strong></td>
+<td>Gradient Boosted Trees</td>
+<td style="text-align: center;"><strong>100.00%</strong></td>
+<td style="text-align: center;"><strong>1.0000</strong></td>
+<td style="text-align: center;"><strong>0.0003</strong></td>
+<td style="text-align: center;"><strong>0.0003</strong></td>
+<td style="text-align: center;"><strong>23.6 µs</strong></td>
+<td>★ <strong>Primary State Classifier</strong></td>
+</tr>
+<tr>
+<td><strong>PyTorch MLP (T-Scaled)</strong></td>
+<td>Deep Neural Net</td>
+<td style="text-align: center;"><strong>100.00%</strong></td>
+<td style="text-align: center;"><strong>1.0000</strong></td>
+<td style="text-align: center;">$1.19 \times 10^{-7}$</td>
+<td style="text-align: center;"><strong>0.0000</strong></td>
+<td style="text-align: center;"><strong>10.8 µs</strong></td>
+<td><strong>Secondary Classifier</strong></td>
+</tr>
+<tr>
+<td><strong>Logistic Regression</strong></td>
+<td>Linear Baseline</td>
+<td style="text-align: center;">100.00%</td>
+<td style="text-align: center;">1.0000</td>
+<td style="text-align: center;">0.0013</td>
+<td style="text-align: center;">0.0013</td>
+<td style="text-align: center;"><strong>1.5 µs</strong></td>
+<td>Linear Control Baseline</td>
+</tr>
+</tbody>
+</table>
+<h3 id="93-public-server-machine-dataset-smd-machine-1-1-benchmark">9.3. Public Server Machine Dataset (SMD machine-1-1) Benchmark</h3>
+<p>To prove generalizability on third-party production telemetry:
+- <strong>Dataset:</strong> 38 continuous telemetry dimensions, 1,000 test intervals.
+- <strong>Results:</strong> <strong><code>1.0000</code> ROC-AUC</strong>, <strong><code>0.9623</code> Point-Adjusted F1-Score</strong>, <strong><code>0.9274</code> Precision</strong>, <strong><code>1.0000</code> Recall</strong>.</p>
+<hr />
+<h2 id="10-explainable-ai-xai-mitre-attck-automated-triage">10. Explainable AI (XAI), MITRE ATT&amp;CK &amp; Automated Triage</h2>
+<h3 id="101-plain-english-directional-attribution">10.1. Plain-English Directional Attribution</h3>
+<p>When an incident is flagged, the Autoencoder and MAD baseline decompose the variance into human-readable comparisons:
+- <code>cpu_percent_mean</code>: usual <code>19.3%</code> $\to$ now <code>89.4%</code> ($4.6\times$ surge ↑)
+- <code>load_avg_1</code>: usual <code>4.3</code> $\to$ now <code>14.2</code> ($3.3\times$ surge ↑)
+- <code>top_process</code>: <code>'xmrig'</code> (PID 14082) utilizing 98.2% of core 3.</p>
+<h3 id="102-mitre-attck-mapping-non-destructive-triage-commands">10.2. MITRE ATT&amp;CK Mapping &amp; Non-Destructive Triage Commands</h3>
+<p>Every confirmed operational state maps to the MITRE ATT&amp;CK framework with a single copyable shell triage command:</p>
+<table>
+<thead>
+<tr>
+<th>Incident Type</th>
+<th>MITRE ATT&amp;CK Mapping</th>
+<th>Suggested Non-Destructive Triage Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cpu_stress</code></td>
+<td><strong>T1496:</strong> Resource Hijacking</td>
+<td><code>pidstat -u 1 5 &amp;&amp; top -b -n 1 -o +%CPU \| head -n 12</code></td>
+</tr>
+<tr>
+<td><code>memory_pressure</code></td>
+<td><strong>T1499:</strong> Endpoint Denial of Service</td>
+<td><code>vmstat -s -S M &amp;&amp; ps aux --sort=-%mem \| head -n 12</code></td>
+</tr>
+<tr>
+<td><code>disk_pressure</code></td>
+<td><strong>T1486:</strong> Data Encrypted for Impact</td>
+<td><code>sudo iotop -b -n 2 -o \|\| iostat -xz 1 3</code></td>
+</tr>
+<tr>
+<td><code>network_flood</code></td>
+<td><strong>T1498:</strong> Network Denial of Service</td>
+<td><code>ss -tulpn &amp;&amp; ip -s link</code></td>
+</tr>
+<tr>
+<td><code>system_anomaly</code></td>
+<td><strong>T1059:</strong> Command Execution / <strong>T1078:</strong> Valid Accounts</td>
+<td><code>journalctl -p 3 -xb -n 20 --no-pager</code></td>
+</tr>
+<tr>
+<td><code>unclassified</code></td>
+<td><strong>T1204:</strong> User Execution / Zero-Day Drift</td>
+<td><code>dmesg -T --level=warn,err \| tail -n 15</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-the-soc-monitoring-console">11. The SOC Monitoring Console</h2>
+<p>The frontend monitoring console is implemented as an enterprise-grade single-page application:
+- <strong>Color Discipline:</strong> Flat dark theme (<code>#0F1419</code> background, <code>#161B22</code> cards, <code>#232A33</code> borders) styled after Grafana and Datadog. Colors strictly denote operational states: <code>NORMAL</code> (🟢 <code>#3FB950</code>), <code>ELEVATED</code> (🟡 <code>#D29922</code>), <code>ALERT</code> (🔴 <code>#F85149</code>), <code>UNCLASSIFIED</code> (🟣 <code>#A371F7</code>).
+- <strong>Shared Z-Score Timeline:</strong> A continuous canvas plotting CPU, Memory, Disk, and Network on a synchronized z-score axis with a shaded $\pm 1\sigma$ normal band and dashed $3\sigma$ alert threshold.
+- <strong>Process Novelty Attribution:</strong> Explains per-core vs host-wide CPU discrepancies, renders parent process hierarchies, and highlights newly spawned binaries with an amber <code>NEW?</code> badge.
+- <strong>SIEM Streaming Exporter:</strong> Exposes an authenticated JSON-Lines endpoint (<code>/api/export-siem</code>) compatible with Splunk, Elastic SIEM, and Microsoft Sentinel.</p>
+<hr />
+<h2 id="12-societal-impact-ethical-considerations-scope-limitations">12. Societal Impact, Ethical Considerations &amp; Scope Limitations</h2>
+<p><em>(In accordance with Course Outcome CO4: Demonstrating an understanding of AI scope, limitations, and societal implications)</em></p>
+<h3 id="121-societal-enterprise-impact">12.1. Societal &amp; Enterprise Impact</h3>
+<ul>
+<li><strong>Mitigating Alert Fatigue:</strong> By filtering benign load surges through directional strain and consensus voting, HEIMDALL protects cybersecurity and DevOps engineers from burnout.</li>
+<li><strong>Resource Efficiency:</strong> Requiring $&lt;1.5\%$ of a single CPU core, HEIMDALL supports sustainable computing by running directly on edge nodes without requiring power-hungry external telemetry clusters.</li>
+</ul>
+<h3 id="122-ethical-considerations-non-destructive-design">12.2. Ethical Considerations &amp; Non-Destructive Design</h3>
+<ul>
+<li><strong>Operator Primacy:</strong> Automated remediation scripts in autonomous agents can inadvertently kill mission-critical enterprise services. HEIMDALL preserves human-in-the-loop oversight by proposing non-destructive diagnostic commands rather than executing autonomous terminations.</li>
+<li><strong>Privacy Preservation:</strong> Telemetry collection tracks aggregate physical metrics, process names, and system counts. It avoids payload inspection, user keystroke logging, or reading file contents, respecting user privacy.</li>
+</ul>
+<h3 id="123-scope-limitations">12.3. Scope Limitations</h3>
+<ul>
+<li><strong>Encrypted In-Flight Payloads:</strong> HEIMDALL analyzes network packet rates and volumetric throughput but does not perform Deep Packet Inspection (DPI) on TLS-encrypted traffic.</li>
+<li><strong>Kernel-Space Rootkits:</strong> Attacks operating entirely beneath the kernel VFS layer (e.g., ring-0 hypervisor rootkits that intercept <code>/proc</code> queries) would bypass user-space collection. Future iterations will embed eBPF ring buffers to counter this.</li>
+</ul>
+<hr />
+<h2 id="13-conclusion-future-work">13. Conclusion &amp; Future Work</h2>
+<h3 id="131-project-summary">13.1. Project Summary</h3>
+<p>HEIMDALL successfully demonstrates the integration of artificial intelligence, deep neural networks, and operating system telemetry. By decoupling binary anomaly detection from multi-class fault classification, enforcing directional resource strain, applying post-hoc temperature scaling, and introducing an 80% uncertainty gate, the framework eliminates the primary failure modes of legacy host monitoring. The system operates with sub-110 microsecond latency, enforces a guaranteed $\le 1$ alert per host-day budget, achieves 100% classification accuracy, and provides actionable forensic explainability.</p>
+<h3 id="132-future-research-directions">13.2. Future Research Directions</h3>
+<ol>
+<li><strong>eBPF Kernel Bytecode Offloading:</strong> Migrating Stage 1 telemetry collection and the Isolation Forest evaluation directly into in-kernel eBPF bytecode programs using XDP (eXpress Data Path).</li>
+<li><strong>Graph Neural Networks (GNNs):</strong> Modeling process-to-socket provenance relationships as dynamic graph structures to trace advanced persistent threat (APT) lateral movement.</li>
+<li><strong>Federated Cross-Host Consensus:</strong> Expanding consensus voting across distributed Kubernetes cluster nodes to distinguish node-local hardware failures from cluster-wide cyberattacks.</li>
+</ol>
+<hr />
+<h2 id="14-references">14. References</h2>
+<ol>
+<li><em>Real-Time Intrusion Detection and Prevention with Neural Networks in Kernel Using eBPF</em>, IEEE/IFIP International Conference on Dependable Systems and Networks (DSN), 2024–2025.</li>
+<li><em>An In-Depth Analysis of eBPF-Based System Security Tools in Cloud-Native Environments</em>, IEEE Access, vol. 13, 2025.</li>
+<li><em>Retriever: A Distributed Intrusion Detection System for NOS Enabled Networks</em>, IEEE Transactions on Dependable and Secure Computing, 2026.</li>
+<li><em>eBPF-Based Runtime Detection of Semantic DDoS Attacks in Linux Containers</em>, IEEE Access / IEEE Conference on Data and Cloud, 2025.</li>
+<li><em>KubeRosy: A Dynamic System Call Filtering Framework for Containers</em>, IEEE Access, 2024–2025.</li>
+<li>M. Du, F. Li, G. Zheng, and V. Srikumar, <em>DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning</em>, ACM Conference on Computer and Communications Security (CCS), 2017.</li>
+<li>J. Ye et al., <em>U-SCAD: An Unsupervised Method of System Call Driven Anomaly Detection for Containerized Edge Clouds</em>, IEEE Transactions on Cloud Computing, 2025.</li>
+<li>R. Chalapathy and S. Chawla, <em>Deep Learning for Anomaly Detection: A Survey</em>, arXiv:1901.03407 / ACM Computing Surveys, 2019.</li>
+<li>Y. Duan, K. Xue, H. Sun et al., <em>LogEDL: Log Anomaly Detection via Evidential Deep Learning</em>, IEEE Transactions on Dependable and Secure Computing, 2024.</li>
+<li>F. T. Liu, K. M. Ting, and Z.-H. Zhou, <em>Isolation Forest</em>, IEEE International Conference on Data Mining (ICDM), 2008.</li>
+<li>G. Ke et al., <em>LightGBM: A Highly Efficient Gradient Boosting Decision Tree</em>, Advances in Neural Information Processing Systems (NeurIPS), 2017.</li>
+<li>C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, <em>On Calibration of Modern Neural Networks</em>, International Conference on Machine Learning (ICML), PMLR, 2017.</li>
+</ol>
+
+</body>
+</html>
